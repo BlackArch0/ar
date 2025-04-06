@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>AR Shaikh - Video Editor</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1e1e2f, #2b5876);
+      color: #fff;
+      line-height: 1.6;
+      scroll-behavior: smooth;
+    }
+
+    /* === Intro Section === */
+    .intro {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      text-align: center;
+      animation: fadeIn 2s ease-in;
+    }
+
+    .intro h1 {
+      font-size: 4rem;
+      color: #ff4d4d;
+      text-shadow: 2px 2px 20px #ff4d4d;
+      animation: pulse 2s infinite ease-in-out;
+      margin-bottom: 20px;
+    }
+
+    .name {
+      font-size: 3.5rem;
+      font-weight: bold;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: slideIn 2s ease-out forwards;
+      opacity: 0;
+    }
+
+    @keyframes slideIn {
+      0% {
+        transform: translateY(50px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    @keyframes pulse {
+      0%, 100% {
+        text-shadow: 2px 2px 20px #ff4d4d;
+      }
+      50% {
+        text-shadow: 0px 0px 40px #ff1a1a;
+      }
+    }
+
+    /* === Header === */
+    header {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    header h1 {
+      font-size: 3rem;
+      background: linear-gradient(90deg, #ff8a00, #e52e71);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: 0 0 20px #ff4d4d;
+    }
+
+    header p {
+      color: #ccc;
+      font-size: 1.2rem;
+      margin-top: 10px;
+    }
+
+    /* === Sections === */
+    section {
+      padding: 60px 20px;
+      max-width: 1100px;
+      margin: auto;
+    }
+
+    .section-title {
+      font-size: 2.5rem;
+      color: #ff8a00;
+      text-align: center;
+      margin-bottom: 40px;
+    }
+
+    .projects {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 30px;
+    }
+
+    .project {
+      background-color: rgba(255, 255, 255, 0.05);
+      border-radius: 15px;
+      padding: 20px;
+      box-shadow: 0 0 20px rgba(255, 255, 255, 0.05);
+      transition: transform 0.3s ease;
+    }
+
+    .project:hover {
+      transform: scale(1.03);
+    }
+
+    .project video {
+      width: 100%;
+      border-radius: 10px;
+    }
+
+    .project h3 {
+      margin-top: 10px;
+      font-size: 1.3rem;
+      color: #fff;
+    }
+
+    .project p {
+      color: #bbb;
+      font-size: 0.95rem;
+    }
+
+    /* === Contact Section === */
+    .contact-btn {
+      display: inline-block;
+      padding: 15px 30px;
+      background: linear-gradient(90deg, #ff4d4d, #e52e71);
+      color: white;
+      border-radius: 30px;
+      margin-top: 20px;
+      font-weight: bold;
+      text-decoration: none;
+      box-shadow: 0 0 20px rgba(255, 77, 77, 0.4);
+      transition: 0.3s ease;
+    }
+
+    .contact-btn:hover {
+      transform: scale(1.05);
+      background: linear-gradient(90deg, #e52e71, #ff8a00);
+    }
+
+    footer {
+      text-align: center;
+      padding: 30px 20px;
+      background-color: rgba(0, 0, 0, 0.2);
+      margin-top: 40px;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Intro Section -->
+ 
+
+  <!-- Header -->
+  <header>
+    <section class="intro">
+        <h1>Hey I Am</h1>
+        <div class="name"></div>    <p>🔥 Cinematic Video Editor | Storyteller | VFX Addict 🔥</p>
+        </section>
+  </header>
+
+  <!-- Projects -->
+  <section>
+    <h2 class="section-title">My Work</h2>
+    <div class="projects">
+      <div class="project">
+        <video src="project1.mp4" controls></video>
+        <h3>Coming Soon</h3>
+        <p>Coming Soon</p>
+      </div>
+      <div class="project">
+        <video src="project2.mp4" controls></video>
+        <h3>Coming Soon</h3>
+        <p>Coming Soon</p>
+      </div>
+      <div class="project">
+        <video src="project3.mp4" controls></video>
+        <h3>Coming Soon</h3>
+        <p>Coming Soon</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Contact -->
+  <section style="text-align:center;">
+    <h2 class="section-title">Let’s Work Together</h2>
+    <p>Got a project in mind? Need 🔥 edits? Hit me up.</p>
+    <a href="mailto:youremail@example.com" class="contact-btn">Contact Me</a>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    &copy; 2025 AR Shaikh | Made with ❤️ and Adobe Premiere
+  </footer>
+
+  <script>
+    let a = document.getElementsByClassName('name')[0];
+    let b = "AR Shaikh";
+    a.innerHTML = b;
+  </script>
+</body>
+</html>
