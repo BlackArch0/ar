@@ -10758,7 +10758,7 @@
 ];
 
    
-  function getMatchScore(userIngredientsSet, recipeIngredients, weightMap) {
+  function findRecipes(userIngredientsSet, recipeIngredients, weightMap) {
   let score = 0;
   for (const ing of recipeIngredients) {
     if (userIngredientsSet.has(ing)) {
@@ -10794,14 +10794,14 @@ function suggestSubstitutes(missingIngredient) {
   return ingredientSubstitutes[missingIngredient] || [];
 }
 
-function filterByAllergy(recipeDB, bannedIngredients) {
+function filterAllergy(recipeDB, bannedIngredients) {
   const bannedSet = new Set(bannedIngredients);
   return recipeDB.filter(recipe =>
     !recipe.ingredients.some(ing => bannedSet.has(ing))
   );
 }
 
-function getIngredientFrequency(recipeDB) {
+function showFrequency(recipeDB) {
   const freq = {};
   for (const recipe of recipeDB) {
     for (const ing of recipe.ingredients) {
@@ -10829,7 +10829,7 @@ function indexTags(recipeDB) {
   }
 }
 
-function findByTag(tag) {
+function searchByTag(tag) {
   return tagIndex.get(tag) || [];
 }
   </script>
