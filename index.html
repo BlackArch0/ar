@@ -36,70 +36,42 @@
 
   <p>Enter ingredients (comma separated):</p>
   <input type="text" id="ingredientInput" placeholder="e.g., egg, tomato, cheese"><br>
-
   <button onclick="findRecipes()">Find Recipes</button>
 
   <br><br>
 
   <input type="text" id="allergyInput" placeholder="Allergy filter (e.g., egg)">
-  <button onclick="filterAllergy()">Filter Allergies</button>
-
-  <br>
+  <button onclick="filterAllergy()">Filter Allergies</button><br>
 
   <input type="text" id="tagInput" placeholder="Search by tag (e.g., vegetarian)">
-  <button onclick="searchByTag()">Search Tags</button>
+  <button onclick="searchByTag()">Search Tags</button><br>
 
-  <br>
   <button onclick="showFrequency()">Show Ingredient Frequency</button>
 
   <div id="recipes"></div>
 
-  <!-- Core Recipe Data -->
-  <script>
-    const recipeDB = [
-      {
-        name: "Sweet Yogurt",
-        ingredients: ["salt", "ginger", "flour", "pepper", "egg"],
-        steps: "Prepare the sweet yogurt using salt, ginger, flour, pepper, and finish with egg.",
-        tags: ["dessert", "vegetarian"]
-      },
-      {
-        name: "Spicy Omelette",
-        ingredients: ["egg", "onion", "chili", "salt", "pepper"],
-        steps: "Whisk egg with onion, chili, salt, and pepper. Cook in a pan until golden.",
-        tags: ["breakfast", "spicy"]
-      },
-      {
-        name: "Paneer Fry",
-        ingredients: ["paneer", "salt", "turmeric", "pepper"],
-        steps: "Fry paneer cubes with salt, turmeric, and pepper.",
-        tags: ["vegetarian", "quick"]
-      }
-    ];
-  </script>
+  <!-- Load external recipe database -->
+  <script src="recipeDB.js"></script>
 
-  <!-- Cook AI Logic -->
+  <!-- Logic -->
   <script>
     const ingredientWeights = {
-      salt: 0.5, water: 0.5, tomato: 1, flour: 1.5, ginger: 2,
-      saffron: 5, tofu: 3, cheese: 2, egg: 2, pepper: 1
+      salt: 0.5, water: 0.5, tomato: 1, flour: 1.5, ginger: 2, saffron: 5, tofu: 3, cheese: 2, egg: 2, pepper: 1
     };
 
     const ingredientSubstitutes = {
       egg: ["banana", "flaxseed", "yogurt"],
-      flour: ["almond flour", "oat flour"]
+      flour: ["almond flour", "oat flour"],
+      milk: ["almond milk", "soy milk"],
+      butter: ["ghee", "olive oil"]
     };
 
     const tagIndex = new Map();
 
     function getMatchScore(userIngredientsSet, recipeIngredients, weightMap) {
-      let score = 0;
-      for (const ing of recipeIngredients) {
-        if (userIngredientsSet.has(ing)) {
-          score += weightMap[ing] || 1;
-        }
-      }
-      return score;
+      return recipeIngredients.reduce((score, ing) =>
+        score + (userIngredientsSet.has(ing) ? (weightMap[ing] || 1) : 0), 0
+      );
     }
 
     function matchPercent(userIngredients, recipeIngredients) {
@@ -114,29 +86,27 @@
 
     function filterByAllergy(recipeDB, bannedIngredients) {
       const bannedSet = new Set(bannedIngredients);
-      return recipeDB.filter(recipe =>
-        !recipe.ingredients.some(ing => bannedSet.has(ing))
-      );
+      return recipeDB.filter(recipe => !recipe.ingredients.some(ing => bannedSet.has(ing)));
     }
 
     function getIngredientFrequency(recipeDB) {
       const freq = {};
-      for (const recipe of recipeDB) {
-        for (const ing of recipe.ingredients) {
+      recipeDB.forEach(recipe => {
+        recipe.ingredients.forEach(ing => {
           freq[ing] = (freq[ing] || 0) + 1;
-        }
-      }
+        });
+      });
       return Object.entries(freq).sort((a, b) => b[1] - a[1]);
     }
 
     function indexTags(recipeDB) {
-      for (const recipe of recipeDB) {
-        if (!recipe.tags) continue;
-        for (const tag of recipe.tags) {
+      recipeDB.forEach(recipe => {
+        if (!recipe.tags) return;
+        recipe.tags.forEach(tag => {
           if (!tagIndex.has(tag)) tagIndex.set(tag, []);
           tagIndex.get(tag).push(recipe);
-        }
-      }
+        });
+      });
     }
 
     function findByTag(tag) {
@@ -155,7 +125,6 @@
       });
 
       const sorted = scored.filter(r => r.score > 0).sort((a, b) => b.score - a.score);
-
       showResults(sorted);
     }
 
@@ -186,7 +155,7 @@
       recipeDiv.innerHTML = "";
 
       if (results.length === 0) {
-        recipeDiv.innerHTML = "<p>No recipes found 😞</p>";
+        recipeDiv.innerHTML = "<p>No matching recipes found 😞</p>";
         return;
       }
 
