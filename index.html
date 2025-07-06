@@ -65,54 +65,9 @@
   <button onclick="runCookAI()">🍳 Cook AI Suggest</button>
 
   <div id="recipes"></div>
-
+<script src="recipeDB.js"></script>
   <script>
-    const recipeDB = [
-  {
-    "name": "Sweet Yogurt",
-    "ingredients": [
-      "salt",
-      "ginger",
-      "flour",
-      "pepper",
-      "egg"
-    ],
-    "steps": "Prepare the sweet yogurt using salt, ginger, flour, pepper, and finish with egg.",
-    "tags": [
-      "dessert",
-      "vegetarian"
-    ]
-  },
-  {
-    "name": "Spicy Omelette",
-    "ingredients": [
-      "egg",
-      "onion",
-      "chili",
-      "salt",
-      "pepper"
-    ],
-    "steps": "Whisk egg with onion, chili, salt, and pepper. Cook in a pan until golden.",
-    "tags": [
-      "breakfast",
-      "spicy"
-    ]
-  },
-  {
-    "name": "Paneer Fry",
-    "ingredients": [
-      "paneer",
-      "salt",
-      "turmeric",
-      "pepper"
-    ],
-    "steps": "Fry paneer cubes with salt, turmeric, and pepper.",
-    "tags": [
-      "vegetarian",
-      "quick"
-    ]
-  }
-];
+
 
     const ingredientWeights = {
       salt: 0.5, water: 0.5, tomato: 1, flour: 1.5, ginger: 2, saffron: 5, tofu: 3, cheese: 2, egg: 2, pepper: 1
