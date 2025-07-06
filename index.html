@@ -2,137 +2,127 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <title>Cook AI - Recipe Recommender</title>
-  
-  <meta name="viewport" content="width=device-width, initial-scale=1">
- <style>
-  * {
-    box-sizing: border-box;
-  }
-
-  body {
-    font-family: 'Segoe UI', sans-serif;
-    background: #fff8f0;
-    padding: 20px;
-    margin: 0;
-    text-align: center;
-  }
-
-  h1 {
-    color: #ff6600;
-    font-size: 2rem;
-    margin-bottom: 10px;
-  }
-
-  p {
-    margin-top: 0;
-    color: #555;
-  }
-
-  input, button {
-    padding: 12px;
-    margin: 10px auto;
-    width: 90%;
-    max-width: 400px;
-    font-size: 16px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    display: block;
-  }
-
-  button {
-    background-color: #ff6600;
-    color: white;
-    border: none;
-    cursor: pointer;
-  }
-
-  button:hover {
-    background-color: #e65c00;
-  }
-
-  #recipes {
-    margin-top: 30px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .recipe {
-    background: #fff;
-    padding: 15px;
-    margin: 10px;
-    width: 100%;
-    max-width: 500px;
-    text-align: left;
-    border: 1px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-  }
-
-  .recipe h3 {
-    margin-top: 0;
-    color: #333;
-  }
-
-  @media screen and (min-width: 768px) {
-    input, button {
-      font-size: 18px;
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Cook AI - All In One</title>
+  <style>
+    * {
+      box-sizing: border-box;
     }
-
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff8f0;
+      padding: 20px;
+      text-align: center;
+      margin: 0;
+    }
     h1 {
-      font-size: 2.5rem;
+      color: #ff6600;
     }
-
-    .recipe {
+    input, button {
+      padding: 12px;
+      margin: 10px auto;
+      width: 90%;
+      max-width: 400px;
       font-size: 16px;
+      display: block;
     }
-  }
-</style>
-
+    button {
+      background-color: #ff6600;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #e65c00;
+    }
+    #recipes {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .recipe {
+      background: #fff;
+      padding: 15px;
+      margin: 10px;
+      width: 100%;
+      max-width: 500px;
+      text-align: left;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+  </style>
 </head>
 <body>
   <h1>🍽️ Cook AI</h1>
 
-  <p>Enter ingredients (comma separated):</p>
-  <input type="text" id="ingredientInput" placeholder="e.g., egg, tomato, cheese"><br>
-  <button onclick="findRecipes()">Find Recipes</button>
-
-  <br><br>
-
-  <input type="text" id="allergyInput" placeholder="Allergy filter (e.g., egg)">
-  <button onclick="filterAllergy()">Filter Allergies</button><br>
-
-  <input type="text" id="tagInput" placeholder="Search by tag (e.g., vegetarian)">
-  <button onclick="searchByTag()">Search Tags</button><br>
-
-  <button onclick="showFrequency()">Show Ingredient Frequency</button>
+  <input type="text" id="ingredientInput" placeholder="Ingredients (e.g., egg, tomato)" />
+  <input type="text" id="allergyInput" placeholder="Allergies (e.g., egg)" />
+  <input type="text" id="tagInput" placeholder="Tag (e.g., vegetarian)" />
+  <button onclick="runCookAI()">🍳 Cook AI Suggest</button>
 
   <div id="recipes"></div>
 
-  <!-- Load external recipe database -->
-  <script src="recipeDB.js"></script>
-
-  <!-- Logic -->
   <script>
+    const recipeDB = [
+  {
+    "name": "Sweet Yogurt",
+    "ingredients": [
+      "salt",
+      "ginger",
+      "flour",
+      "pepper",
+      "egg"
+    ],
+    "steps": "Prepare the sweet yogurt using salt, ginger, flour, pepper, and finish with egg.",
+    "tags": [
+      "dessert",
+      "vegetarian"
+    ]
+  },
+  {
+    "name": "Spicy Omelette",
+    "ingredients": [
+      "egg",
+      "onion",
+      "chili",
+      "salt",
+      "pepper"
+    ],
+    "steps": "Whisk egg with onion, chili, salt, and pepper. Cook in a pan until golden.",
+    "tags": [
+      "breakfast",
+      "spicy"
+    ]
+  },
+  {
+    "name": "Paneer Fry",
+    "ingredients": [
+      "paneer",
+      "salt",
+      "turmeric",
+      "pepper"
+    ],
+    "steps": "Fry paneer cubes with salt, turmeric, and pepper.",
+    "tags": [
+      "vegetarian",
+      "quick"
+    ]
+  }
+];
+
     const ingredientWeights = {
       salt: 0.5, water: 0.5, tomato: 1, flour: 1.5, ginger: 2, saffron: 5, tofu: 3, cheese: 2, egg: 2, pepper: 1
-    };
-
-    const ingredientSubstitutes = {
-      egg: ["banana", "flaxseed", "yogurt"],
-      flour: ["almond flour", "oat flour"],
-      milk: ["almond milk", "soy milk"],
-      butter: ["ghee", "olive oil"]
     };
 
     const tagIndex = new Map();
 
     function getMatchScore(userIngredientsSet, recipeIngredients, weightMap) {
       return recipeIngredients.reduce((score, ing) =>
-        score + (userIngredientsSet.has(ing) ? (weightMap[ing] || 1) : 0), 0
-      );
+        score + (userIngredientsSet.has(ing) ? (weightMap[ing] || 1) : 0), 0);
     }
 
     function matchPercent(userIngredients, recipeIngredients) {
@@ -141,27 +131,14 @@
       return Math.round((matchCount / recipeIngredients.length) * 100);
     }
 
-    function suggestSubstitutes(missingIngredient) {
-      return ingredientSubstitutes[missingIngredient] || [];
-    }
-
-    function filterByAllergy(recipeDB, bannedIngredients) {
+    function filterByAllergy(data, bannedIngredients) {
       const bannedSet = new Set(bannedIngredients);
-      return recipeDB.filter(recipe => !recipe.ingredients.some(ing => bannedSet.has(ing)));
+      return data.filter(recipe => !recipe.ingredients.some(ing => bannedSet.has(ing)));
     }
 
-    function getIngredientFrequency(recipeDB) {
-      const freq = {};
-      recipeDB.forEach(recipe => {
-        recipe.ingredients.forEach(ing => {
-          freq[ing] = (freq[ing] || 0) + 1;
-        });
-      });
-      return Object.entries(freq).sort((a, b) => b[1] - a[1]);
-    }
-
-    function indexTags(recipeDB) {
-      recipeDB.forEach(recipe => {
+    function indexTags(data) {
+      tagIndex.clear();
+      data.forEach(recipe => {
         if (!recipe.tags) return;
         recipe.tags.forEach(tag => {
           if (!tagIndex.has(tag)) tagIndex.set(tag, []);
@@ -174,41 +151,34 @@
       return tagIndex.get(tag) || [];
     }
 
-    function findRecipes() {
-      const input = document.getElementById("ingredientInput").value.toLowerCase();
-      const ingredients = input.split(",").map(i => i.trim());
-      const userSet = new Set(ingredients);
+    function runCookAI() {
+      const inputIngredients = document.getElementById("ingredientInput").value.toLowerCase();
+      const inputAllergies = document.getElementById("allergyInput").value.toLowerCase();
+      const inputTag = document.getElementById("tagInput").value.toLowerCase();
 
-      const scored = recipeDB.map(recipe => {
+      const ingredients = inputIngredients.split(",").map(i => i.trim()).filter(Boolean);
+      const allergies = inputAllergies.split(",").map(i => i.trim()).filter(Boolean);
+      const tag = inputTag.trim();
+
+      let results = [...recipeDB];
+
+      if (allergies.length > 0) {
+        results = filterByAllergy(results, allergies);
+      }
+
+      if (tag.length > 0) {
+        indexTags(results);
+        results = findByTag(tag);
+      }
+
+      const userSet = new Set(ingredients);
+      results = results.map(recipe => {
         const score = getMatchScore(userSet, recipe.ingredients, ingredientWeights);
         const percent = matchPercent(ingredients, recipe.ingredients);
         return { ...recipe, score, percent };
-      });
+      }).filter(r => r.score > 0).sort((a, b) => b.score - a.score);
 
-      const sorted = scored.filter(r => r.score > 0).sort((a, b) => b.score - a.score);
-      showResults(sorted);
-    }
-
-    function filterAllergy() {
-      const banned = document.getElementById("allergyInput").value.toLowerCase().split(",").map(x => x.trim());
-      const safe = filterByAllergy(recipeDB, banned);
-      showResults(safe);
-    }
-
-    function searchByTag() {
-      const tag = document.getElementById("tagInput").value.toLowerCase().trim();
-      indexTags(recipeDB);
-      const tagged = findByTag(tag);
-      showResults(tagged);
-    }
-
-    function showFrequency() {
-      const freqList = getIngredientFrequency(recipeDB);
-      const recipeDiv = document.getElementById("recipes");
-      recipeDiv.innerHTML = "<h3>🍅 Ingredient Frequency</h3>";
-      freqList.forEach(([ingredient, count]) => {
-        recipeDiv.innerHTML += `<div class="recipe"><strong>${ingredient}</strong>: used in ${count} recipes</div>`;
-      });
+      showResults(results);
     }
 
     function showResults(results) {
@@ -226,7 +196,7 @@
             <h3>${recipe.name}</h3>
             <strong>Ingredients:</strong> ${recipe.ingredients.join(", ")}<br>
             <strong>Steps:</strong> ${recipe.steps}<br>
-            ${recipe.percent !== undefined ? `<strong>Match:</strong> ${recipe.percent}%<br>` : ""}
+            <strong>Match:</strong> ${recipe.percent}%<br>
             ${recipe.tags ? `<strong>Tags:</strong> ${recipe.tags.join(", ")}` : ""}
           </div>
         `;
