@@ -10805,35 +10805,81 @@
   }
 ];
 
-    function findRecipes() {
-      const input = document.getElementById("ingredientInput").value.toLowerCase();
-      const ingredients = input.split(",").map(i => i.trim());
-
-      const scoredRecipes = recipeDB.map(recipe => {
-        const matchCount = recipe.ingredients.filter(ing => ingredients.includes(ing)).length;
-        return { ...recipe, score: matchCount };
-      });
-
-      const sorted = scoredRecipes.filter(r => r.score > 0).sort((a, b) => b.score - a.score);
-
-      const recipeDiv = document.getElementById("recipes");
-      recipeDiv.innerHTML = "";
-
-      if (sorted.length === 0) {
-        recipeDiv.innerHTML = "<p>No matching recipes found 😞</p>";
-        return;
-      }
-
-      sorted.forEach(recipe => {
-        recipeDiv.innerHTML += `
-          <div class="recipe">
-            <h3>${recipe.name}</h3>
-            <strong>Ingredients:</strong> ${recipe.ingredients.join(", ")}<br>
-            <strong>Steps:</strong> ${recipe.steps}
-          </div>
-        `;
-      });
+   
+  function getMatchScore(userIngredientsSet, recipeIngredients, weightMap) {
+  let score = 0;
+  for (const ing of recipeIngredients) {
+    if (userIngredientsSet.has(ing)) {
+      score += weightMap[ing] || 1;
     }
+  }
+  return score;
+}
+
+const ingredientWeights = {
+  salt: 0.5,
+  water: 0.5,
+  tomato: 1,
+  flour: 1.5,
+  ginger: 2,
+  saffron: 5,
+  tofu: 3,
+  cheese: 2,
+  egg: 2,
+  pepper: 1
+};
+
+// ✅ Ingredient Substitution
+const ingredientSubstitutes = {
+  milk: ["almond milk", "soy milk", "coconut milk"],
+  butter: ["ghee", "olive oil"],
+  egg: ["flaxseed", "banana", "yogurt"],
+  flour: ["almond flour", "oat flour"],
+  cheese: ["paneer", "nutritional yeast"]
+};
+
+function suggestSubstitutes(missingIngredient) {
+  return ingredientSubstitutes[missingIngredient] || [];
+}
+
+function filterByAllergy(recipeDB, bannedIngredients) {
+  const bannedSet = new Set(bannedIngredients);
+  return recipeDB.filter(recipe =>
+    !recipe.ingredients.some(ing => bannedSet.has(ing))
+  );
+}
+
+function getIngredientFrequency(recipeDB) {
+  const freq = {};
+  for (const recipe of recipeDB) {
+    for (const ing of recipe.ingredients) {
+      freq[ing] = (freq[ing] || 0) + 1;
+    }
+  }
+  return Object.entries(freq).sort((a, b) => b[1] - a[1]);
+}
+
+function matchPercent(userIngredients, recipeIngredients) {
+  const userSet = new Set(userIngredients);
+  const matchCount = recipeIngredients.filter(i => userSet.has(i)).length;
+  return Math.round((matchCount / recipeIngredients.length) * 100);
+}
+
+const tagIndex = new Map();
+
+function indexTags(recipeDB) {
+  for (const recipe of recipeDB) {
+    if (!recipe.tags) continue;
+    for (const tag of recipe.tags) {
+      if (!tagIndex.has(tag)) tagIndex.set(tag, []);
+      tagIndex.get(tag).push(recipe);
+    }
+  }
+}
+
+function findByTag(tag) {
+  return tagIndex.get(tag) || [];
+}
   </script>
 </body>
 </html>
