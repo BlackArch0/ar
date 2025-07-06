@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -175,15 +175,15 @@
  
 
   <!-- Header -->
-  <header>
+<!--   <header>
     <section class="intro">
         <h1>Hey I Am</h1>
         <div class="name"></div>    <p>🔥 Video Editor | Storyteller | AE 🔥</p>
         </section>
-  </header>
+  </header> -->
 
   <!-- Projects -->
-  <section>
+<!--   <section>
     <h2 class="section-title">My Work</h2>
    <center> “All edits below are personal projects to showcase my style, storytelling, and technical skills" </center>
     <div class="projects">
@@ -204,23 +204,127 @@
       </div>
     </div>
   </section>
-
+ -->
   <!-- Contact -->
-  <section style="text-align:center;">
-    <h2 class="section-title">Let’s Work Together</h2>
+ <!--- <section style="text-align:center;"> --->
+<!--     <h2 class="section-title">Let’s Work Together</h2>
     <p>Got a project in mind? Need 🔥 edits? Hit me up.</p>
     <a href="mailto:arshaikh2700@gmail.com" class="contact-btn">Contact Me</a>
-  </section>
+  </section> -->
 
   <!-- Footer -->
-  <footer>
+<!--   <footer>
     &copy; 2025 AR Shaikh 
-  </footer>
+  </footer> -->
 
-  <script>
+<!--   <script>
     let a = document.getElementsByClassName('name')[0];
     let b = "AR Shaikh";
     a.innerHTML = b;
+  </script>
+</body>
+</html> -->
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cook AI - Recipe Recommender</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #fff8f0;
+      padding: 40px;
+      text-align: center;
+    }
+    h1 { color: #ff6600; }
+    input, button {
+      padding: 10px;
+      margin: 10px;
+      width: 300px;
+      font-size: 16px;
+    }
+    #recipes {
+      margin-top: 20px;
+      text-align: left;
+      display: inline-block;
+    }
+    .recipe {
+      background: #fff;
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <h1>🍽️ Cook AI</h1>
+  <p>Enter ingredients (comma separated):</p>
+  <input type="text" id="ingredientInput" placeholder="e.g., egg, tomato, cheese">
+  <br>
+  <button onclick="findRecipes()">Find Recipes</button>
+
+  <div id="recipes"></div>
+
+  <script>
+    // Dummy trained data (manually created, no ML)
+    const recipeDB = [
+      {
+        name: "Grilled Cheese Sandwich",
+        ingredients: ["bread", "cheese", "butter"],
+        steps: "Butter the bread, add cheese, and grill it."
+      },
+      {
+        name: "Tomato Omelette",
+        ingredients: ["egg", "tomato", "onion", "salt"],
+        steps: "Beat eggs, mix veggies, and cook on a pan."
+      },
+      {
+        name: "Veggie Pasta",
+        ingredients: ["pasta", "tomato", "capsicum", "salt"],
+        steps: "Boil pasta and stir-fry veggies in sauce."
+      },
+      {
+        name: "Cheesy Egg Toast",
+        ingredients: ["egg", "cheese", "bread"],
+        steps: "Fry egg, place on toast, top with cheese."
+      },
+      {
+        name: "Aloo Paratha",
+        ingredients: ["potato", "wheat flour", "salt", "masala"],
+        steps: "Make potato filling, roll dough, cook with ghee."
+      }
+    ];
+
+    function findRecipes() {
+      const input = document.getElementById("ingredientInput").value.toLowerCase();
+      const ingredients = input.split(",").map(i => i.trim());
+
+      const scoredRecipes = recipeDB.map(recipe => {
+        const matchCount = recipe.ingredients.filter(ing => ingredients.includes(ing)).length;
+        return { ...recipe, score: matchCount };
+      });
+
+      const sorted = scoredRecipes.filter(r => r.score > 0).sort((a, b) => b.score - a.score);
+
+      const recipeDiv = document.getElementById("recipes");
+      recipeDiv.innerHTML = "";
+
+      if (sorted.length === 0) {
+        recipeDiv.innerHTML = "<p>No matching recipes found 😞</p>";
+        return;
+      }
+
+      sorted.forEach(recipe => {
+        recipeDiv.innerHTML += `
+          <div class="recipe">
+            <h3>${recipe.name}</h3>
+            <strong>Ingredients:</strong> ${recipe.ingredients.join(", ")}<br>
+            <strong>Steps:</strong> ${recipe.steps}
+          </div>
+        `;
+      });
+    }
   </script>
 </body>
 </html>
